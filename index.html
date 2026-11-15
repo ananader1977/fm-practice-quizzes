@@ -804,7 +804,7 @@
           <span class="hero-chip">Author: <strong>Anas Nader</strong></span>
           <span class="hero-chip">Publisher: <strong>ADN Soft</strong> (UAE)</span>
           <span class="hero-chip">Pass Mark: <strong>Above 80%</strong></span>
-          <span class="hero-chip">Timer: <strong>1 Min / Question</strong></span>
+          <span class="hero-chip">Total Time: <strong>1 Min × Questions</strong></span>
         </div>
       </div>
       <div id="userHeaderBox" class="user-badge-box hidden">
@@ -859,7 +859,7 @@
             </li>
             <li>
               <span class="feature-icon">2</span>
-              <div><strong>1-Minute Per Question Timer:</strong> Exceeding 60 seconds on any question marks the quiz as failed for retake.</div>
+              <div><strong>Section Total Timer (1 Min × Questions):</strong> Complete the entire section within the total time limit (e.g., 28 mins for 28 questions), or the quiz expires as failed.</div>
             </li>
             <li>
               <span class="feature-icon">3</span>
@@ -1228,8 +1228,10 @@
       if (currentUser.activeAttempt) {
         const att = currentUser.activeAttempt;
         const label = att.mode === 'mixed' ? 'Mixed Practice Set' : `Section ${att.sectionId}`;
+        const rMin = String(Math.floor(att.secondsLeft / 60)).padStart(2, '0');
+        const rSec = String(att.secondsLeft % 60).padStart(2, '0');
         document.getElementById('resumeBannerText').textContent =
-          `Saved progress found: ${label} — Question ${att.currentIndex + 1} of ${att.questions.length} (${att.secondsLeft}s left).`;
+          `Saved progress found: ${label} — Question ${att.currentIndex + 1} of ${att.questions.length} (${rMin}:${rSec} total time left).`;
         resumeBanner.classList.remove('hidden');
       } else {
         resumeBanner.classList.add('hidden');
@@ -1268,7 +1270,7 @@
             ${badgeHtml}
             <div style="font-size:0.78rem;color:var(--slate-blue);font-weight:700;">SECTION ${sec.id} • Q${firstQ}–Q${lastQ}</div>
             <h3 class="sec-title">${sec.title}</h3>
-            <p class="sec-meta">${qCount} Questions • Pass &gt; 80% (${Math.floor(qCount * 0.8) + 1}/${qCount} required)</p>
+            <p class="sec-meta">${qCount} Questions • ${qCount} Mins Total • Pass &gt; 80% (${Math.floor(qCount * 0.8) + 1}/${qCount})</p>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
             <button class="btn ${isPassed ? 'btn-outline' : 'btn-primary'}" style="flex:1;" ${!isUnlocked ? 'disabled' : ''} onclick="startSectionQuiz(${sec.id})">
@@ -1285,12 +1287,14 @@
       showCertificatesGallery();
     }
 
-    // --- Active Quiz & 1-Minute Per-Question Timer ---
+    // --- Active Quiz & Total Section Timer (Total Questions * 60s) ---
     let timerInterval = null;
+    let lastCompletedAttempt = null;
 
     function startSectionQuiz(sectionId) {
       const sec = QUIZ_SECTIONS.find(s => s.id === sectionId);
       if (!sec) return;
+      const totalSeconds = sec.questions.length * 60;
       currentUser.activeAttempt = {
         mode: 'section',
         sectionId: sec.id,
@@ -1299,7 +1303,8 @@
         currentIndex: 0,
         answers: {},
         guesses: {},
-        secondsLeft: 60
+        totalSeconds: totalSeconds,
+        secondsLeft: totalSeconds
       };
       saveCurrentUserRecord();
       launchActiveAttempt();
@@ -1317,6 +1322,7 @@
         [pool[i], pool[j]] = [pool[j], pool[i]];
       }
       const selected = pool.slice(0, Math.min(20, pool.length));
+      const totalSeconds = selected.length * 60;
       currentUser.activeAttempt = {
         mode: 'mixed',
         sectionId: 0,
@@ -1325,7 +1331,8 @@
         currentIndex: 0,
         answers: {},
         guesses: {},
-        secondsLeft: 60
+        totalSeconds: totalSeconds,
+        secondsLeft: totalSeconds
       };
       saveCurrentUserRecord();
       launchActiveAttempt();
@@ -1340,7 +1347,7 @@
       hideAllViews();
       document.getElementById('quizView').classList.remove('hidden');
       renderCurrentQuestion();
-      startQuestionTimer();
+      startSectionTimer();
     }
 
     function renderCurrentQuestion() {
@@ -1352,7 +1359,7 @@
       document.getElementById('quizSecLabel').textContent =
         att.mode === 'mixed' ? att.sectionTitle : `Section ${att.sectionId}: ${att.sectionTitle}`;
       document.getElementById('quizProgressLabel').textContent =
-        `Question ${att.currentIndex + 1} of ${total}`;
+        `Question ${att.currentIndex + 1} of ${total} (${total} Mins Total)`;
       document.getElementById('qNumberBadge').textContent = `Question #${qObj.num}`;
       document.getElementById('qStemText').textContent = qObj.q;
 
@@ -1378,7 +1385,7 @@
       document.getElementById('nextBtn').classList.toggle('hidden', isLast);
       document.getElementById('submitSecBtn').classList.toggle('hidden', !isLast);
 
-      updateTimerDisplay(att.secondsLeft);
+      updateTimerDisplay(att.secondsLeft, att.totalSeconds || total * 60);
 
       if (document.getElementById('autoReadToggle')?.checked) {
         speakCurrentQuestion();
@@ -1415,7 +1422,7 @@
       if (!att) return;
       if (att.currentIndex < att.questions.length - 1) {
         att.currentIndex++;
-        att.secondsLeft = 60;
+        // Total section timer continues counting down across questions (not reset per question)
         saveCurrentUserRecord();
         stopSpeech();
         renderCurrentQuestion();
@@ -1429,14 +1436,14 @@
       showDashboard();
     }
 
-    function startQuestionTimer() {
+    function startSectionTimer() {
       stopTimer();
       timerInterval = setInterval(() => {
         const att = currentUser.activeAttempt;
         if (!att) { stopTimer(); return; }
         att.secondsLeft--;
         saveCurrentUserRecord();
-        updateTimerDisplay(att.secondsLeft);
+        updateTimerDisplay(att.secondsLeft, att.totalSeconds || att.questions.length * 60);
         if (att.secondsLeft <= 0) {
           stopTimer();
           handleTimeExpired();
@@ -1451,15 +1458,15 @@
       }
     }
 
-    function updateTimerDisplay(sec) {
+    function updateTimerDisplay(sec, totalSec) {
       const box = document.getElementById('timerBox');
       const s = Math.max(0, sec);
       const mm = String(Math.floor(s / 60)).padStart(2, '0');
       const ss = String(s % 60).padStart(2, '0');
       box.textContent = `⏱ ${mm}:${ss}`;
       box.classList.remove('warn', 'danger');
-      if (s <= 10) box.classList.add('danger');
-      else if (s <= 20) box.classList.add('warn');
+      if (s <= 60) box.classList.add('danger');
+      else if (totalSec && s <= Math.max(120, Math.floor(totalSec * 0.2))) box.classList.add('warn');
     }
 
     function handleTimeExpired() {
@@ -1468,6 +1475,31 @@
       const secId = att.sectionId;
       const secTitle = att.sectionTitle;
       const mode = att.mode;
+      const totalMins = att.questions.length;
+
+      let correctCount = 0;
+      att.questions.forEach(q => {
+        if (att.answers[q.num] === q.answer) correctCount++;
+      });
+      const total = att.questions.length;
+      const scorePct = (correctCount / total) * 100;
+      const todayStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+      lastCompletedAttempt = {
+        mode,
+        sectionId: secId,
+        sectionTitle: secTitle,
+        questions: att.questions,
+        answers: { ...att.answers },
+        guesses: { ...att.guesses },
+        correctCount,
+        total,
+        scorePct,
+        passed: false,
+        expired: true,
+        date: todayStr
+      };
+
       currentUser.activeAttempt = null;
       saveCurrentUserRecord();
 
@@ -1475,16 +1507,17 @@
       document.getElementById('resultView').classList.remove('hidden');
       document.getElementById('earnedCertContainer').classList.add('hidden');
       document.getElementById('reviewList').innerHTML =
-        `<p style="color:var(--muted);">Answer explanations are withheld when a timed attempt expires. Repeat the section and answer each question within 60 seconds.</p>`;
+        `<p style="color:var(--muted);">Answer explanations are withheld when the total section time (${totalMins} minutes) expires. Repeat the section and submit within ${totalMins} minutes.</p>`;
 
       document.getElementById('resultSummaryCard').innerHTML = `
         <div class="alert alert-danger" style="font-size:1.05rem;">
-          <strong>⏰ Time Expired — Quiz Marked as Failed!</strong><br/>
-          The 1-minute timer for the current question reached 00:00. Per exam rules, this attempt is failed and must be repeated.
+          <strong>⏰ Total Section Time Expired (${totalMins} Minutes) — Quiz Marked as Failed!</strong><br/>
+          The total allowed time (${totalMins} questions × 1 minute = ${totalMins}:00) ran out before submission. You answered ${correctCount}/${total} (${scorePct.toFixed(1)}%) correctly before expiry, and the quiz must be repeated.
         </div>
         <h2 style="margin:8px 0;color:var(--navy);">${mode === 'mixed' ? secTitle : `Section ${secId}: ${secTitle}`}</h2>
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
           <button class="btn btn-danger" onclick="${mode === 'mixed' ? 'startMixedQuiz()' : `startSectionQuiz(${secId})`}">↻ Repeat ${mode === 'mixed' ? 'Mixed Set' : `Section ${secId}`}</button>
+          <button class="btn btn-navy" onclick="downloadQuizPDF()">📄 Download Quiz &amp; Grade (PDF)</button>
           <button class="btn btn-outline" onclick="showDashboard()">← Back to Sections</button>
         </div>
       `;
@@ -1505,6 +1538,26 @@
       const scorePct = (correctCount / total) * 100;
       const passed = scorePct > 80;
       const todayStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      const totalSec = att.totalSeconds || total * 60;
+      const elapsedSec = Math.max(0, totalSec - (att.secondsLeft || 0));
+      const elMin = String(Math.floor(elapsedSec / 60)).padStart(2, '0');
+      const elSec = String(elapsedSec % 60).padStart(2, '0');
+
+      lastCompletedAttempt = {
+        mode: att.mode,
+        sectionId: att.sectionId,
+        sectionTitle: att.sectionTitle,
+        questions: att.questions,
+        answers: { ...att.answers },
+        guesses: { ...att.guesses },
+        correctCount,
+        total,
+        scorePct,
+        passed,
+        expired: false,
+        timeTaken: `${elMin}:${elSec} / ${total}:00`,
+        date: todayStr
+      };
 
       if (att.mode === 'section' && passed) {
         const existing = currentUser.passedSections[att.sectionId];
@@ -1542,13 +1595,14 @@
       document.getElementById('resultSummaryCard').innerHTML = `
         <div class="alert ${passed ? 'alert-success' : 'alert-danger'}" style="font-size:1.05rem;">
           <strong>${passed ? '🎉 PASSED! Section Completed' : '❌ NOT PASSED (Requires > 80%)'}</strong> —
-          Score: <strong>${correctCount} / ${total} (${scorePct.toFixed(1)}%)</strong><br/>
+          Score: <strong>${correctCount} / ${total} (${scorePct.toFixed(1)}%)</strong> • Time Used: <strong>${elMin}:${elSec} of ${total}:00</strong><br/>
           <span>${bandNote}</span>
         </div>
         <h2 style="margin:6px 0;color:var(--navy);">${att.mode === 'mixed' ? att.sectionTitle : `Section ${att.sectionId}: ${att.sectionTitle}`}</h2>
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
           ${hasNext ? `<button class="btn btn-primary" onclick="startSectionQuiz(${nextSecId})">Proceed to Section ${nextSecId} →</button>` : ''}
           ${all8Passed ? `<button class="btn btn-primary" onclick="openMasterCertificate()">🏆 Claim Master Certificate (200 Questions)</button>` : ''}
+          <button class="btn btn-navy" onclick="downloadQuizPDF()">📄 Download Quiz &amp; Grade (PDF)</button>
           <button class="btn btn-outline" onclick="${att.mode === 'mixed' ? 'startMixedQuiz()' : `startSectionQuiz(${att.sectionId})`}">↻ Repeat Section</button>
           <button class="btn btn-outline" onclick="showDashboard()">← All Sections</button>
         </div>
@@ -1594,6 +1648,169 @@
         `;
         revList.appendChild(div);
       });
+    }
+
+    // --- Clean PDF Quiz & Grade Report Generator (Print-to-PDF Window) ---
+    function downloadQuizPDF() {
+      const rep = lastCompletedAttempt;
+      if (!rep) return;
+
+      const escapeHtml = (str) => String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+
+      const titleText = rep.mode === 'mixed'
+        ? escapeHtml(rep.sectionTitle)
+        : `Section ${rep.sectionId}: ${escapeHtml(rep.sectionTitle)}`;
+      const statusText = rep.expired
+        ? 'FAILED (TOTAL TIME EXPIRED)'
+        : (rep.passed ? 'PASSED (> 80%)' : 'NOT PASSED (REQUIRES > 80%)');
+      const statusColor = rep.passed ? '#0F766E' : '#DC2626';
+      const statusBg = rep.passed ? '#F0FDFA' : '#FEF2F2';
+
+      let itemsHtml = '';
+      rep.questions.forEach((q) => {
+        const uAns = rep.answers[q.num] || 'No Answer';
+        const isCorrect = uAns === q.answer;
+        const wasGuessed = !!rep.guesses[q.num];
+        const optRows = ['A', 'B', 'C', 'D'].map((ltr) => {
+          const isUserChoice = uAns === ltr;
+          const isRightChoice = !rep.expired && q.answer === ltr;
+          let badge = '';
+          let rowStyle = 'padding:5px 8px;border-radius:6px;margin-bottom:3px;font-size:12.5px;';
+          if (isRightChoice) {
+            rowStyle += 'background:#F0FDFA;border:1px solid #99F6E4;color:#0F766E;font-weight:700;';
+            badge = ' ✓ [Correct Answer]';
+          } else if (isUserChoice && !rep.expired) {
+            rowStyle += 'background:#FEF2F2;border:1px solid #FECACA;color:#991B1B;font-weight:700;';
+            badge = ' ✗ [Your Selection]';
+          } else if (isUserChoice && rep.expired) {
+            rowStyle += 'background:#EFF6FF;border:1px solid #BFDBFE;color:#1E4E79;font-weight:700;';
+            badge = ' [Your Selection]';
+          } else {
+            rowStyle += 'color:#334155;';
+          }
+          return `<div style="${rowStyle}"><strong>${ltr}.</strong> ${escapeHtml(q.options[ltr])}${badge}</div>`;
+        }).join('');
+
+        const resultTag = rep.expired
+          ? `<span style="color:#475569;font-weight:700;">Selected: ${escapeHtml(uAns)}</span>`
+          : (isCorrect
+              ? `<span style="color:#0F766E;font-weight:700;">✓ Correct (${escapeHtml(uAns)})</span>`
+              : `<span style="color:#DC2626;font-weight:700;">✗ Incorrect (Your Answer: ${escapeHtml(uAns)} | Correct: ${escapeHtml(q.answer)})</span>`);
+
+        const expBlock = rep.expired
+          ? ''
+          : `<div style="margin-top:6px;padding:7px 10px;background:#F8FAFC;border-left:3px solid #1E4E79;font-size:12px;color:#334155;">
+               <strong>Explanation:</strong> ${escapeHtml(q.explanation)}
+             </div>`;
+
+        itemsHtml += `
+          <div style="border:1px solid #CBD5E1;border-radius:8px;padding:12px 14px;margin-bottom:12px;page-break-inside:avoid;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:12.5px;">
+              <strong style="color:#0F2942;">Question #${q.num} ${wasGuessed ? '<span style="background:#EFF6FF;color:#1E4E79;padding:1px 6px;border-radius:4px;font-size:11px;margin-left:6px;">Guessed</span>' : ''}</strong>
+              ${resultTag}
+            </div>
+            <div style="font-weight:600;color:#0F2942;font-size:13.5px;margin-bottom:8px;">${escapeHtml(q.q)}</div>
+            ${optRows}
+            ${expBlock}
+          </div>
+        `;
+      });
+
+      const printWin = window.open('', '_blank', 'width=960,height=800');
+      if (!printWin) {
+        alert('Please allow pop-ups in your browser to open and save the PDF report.');
+        return;
+      }
+
+      printWin.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="UTF-8" />
+          <title>Quiz Report & Grade — ${titleText}</title>
+          <style>
+            body {
+              font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+              color: #0F2942;
+              margin: 24px;
+              line-height: 1.45;
+            }
+            .header {
+              background: #0F2942;
+              color: #FFFFFF;
+              padding: 18px 22px;
+              border-radius: 10px;
+              border-bottom: 4px solid #0D9488;
+              margin-bottom: 18px;
+            }
+            .summary-grid {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              gap: 10px;
+              background: #F8FAFC;
+              border: 1px solid #CBD5E1;
+              border-radius: 10px;
+              padding: 14px 18px;
+              margin-bottom: 18px;
+              font-size: 13px;
+            }
+            .grade-banner {
+              background: ${statusBg};
+              border: 1.5px solid ${statusColor};
+              color: ${statusColor};
+              padding: 12px 16px;
+              border-radius: 8px;
+              font-weight: 700;
+              font-size: 15px;
+              margin-bottom: 18px;
+              text-align: center;
+            }
+            @media print {
+              body { margin: 12px; }
+              .no-print-bar { display: none !important; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="no-print-bar" style="background:#EFF6FF;border:1px solid #BFDBFE;padding:10px 14px;border-radius:8px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:13px;color:#1E4E79;"><strong>Ready to Save as PDF:</strong> Choose <em>"Save as PDF"</em> in the print dialog.</span>
+            <button onclick="window.print()" style="background:#0D9488;color:#FFF;border:none;border-radius:6px;padding:7px 14px;font-weight:700;cursor:pointer;">🖨 Save / Print PDF</button>
+          </div>
+          <div class="header">
+            <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#99F6E4;font-weight:700;">ADN Soft • Facilities Management Practice Quizzes</div>
+            <h1 style="margin:4px 0 2px;font-size:20px;">${titleText}</h1>
+            <div style="font-size:12px;color:#CBD5E1;">Operations &amp; Maintenance • By Anas Nader</div>
+          </div>
+
+          <div class="summary-grid">
+            <div><strong>Candidate Name:</strong> ${escapeHtml(currentUser.fullName)}</div>
+            <div><strong>Username:</strong> @${escapeHtml(currentUser.username)}</div>
+            <div><strong>Date Completed:</strong> ${escapeHtml(rep.date)}</div>
+            <div><strong>Total Allowed Time:</strong> ${rep.total} Minutes (${rep.total} Qs × 1 Min)</div>
+            <div><strong>Final Score:</strong> ${rep.correctCount} / ${rep.total} (${rep.scorePct.toFixed(1)}%)</div>
+            <div><strong>Pass Mark Requirement:</strong> Above 80%</div>
+          </div>
+
+          <div class="grade-banner">
+            Result: ${statusText} — Score: ${rep.correctCount} / ${rep.total} (${rep.scorePct.toFixed(1)}%)
+          </div>
+
+          <h2 style="font-size:16px;color:#0F2942;border-bottom:2px solid #E2E8F0;padding-bottom:6px;margin-bottom:12px;">
+            Complete Quiz Questions, Responses &amp; Answer Key
+          </h2>
+          ${itemsHtml}
+
+          <script>
+            window.onload = function() { setTimeout(function() { window.print(); }, 350); };
+          <\/script>
+        </body>
+        </html>
+      `);
+      printWin.document.close();
     }
 
     // --- Certificates Rendering & PNG Download (Navy, Slate Blue & Teal Theme) ---

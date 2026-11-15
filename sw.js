@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fm-quizzes-adn-v2';
+const CACHE_NAME = 'fm-quizzes-adn-v3';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
