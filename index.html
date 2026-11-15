@@ -48,7 +48,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Pinned Top Install Bar — Crisp Slate Blue & Teal (No Black/Orange) */
+    /* Pinned Top Install Bar — Responsive Desktop & Mobile Alignment */
     .install-bar {
       position: sticky;
       top: 0;
@@ -56,30 +56,40 @@
       background: linear-gradient(90deg, var(--slate-blue) 0%, #163C61 100%);
       color: #FFFFFF;
       padding: 10px 20px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.18);
       box-shadow: 0 2px 12px rgba(15, 41, 66, 0.14);
+    }
+    .install-bar-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
     }
     .install-bar-left {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
+      line-height: 1.4;
+      min-width: 0;
     }
     .install-pill {
       background: rgba(13, 148, 136, 0.28);
       border: 1px solid #5EEAD4;
       color: #CCFBF1;
       font-weight: 700;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       padding: 3px 10px;
       border-radius: 999px;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .install-copy {
+      color: #F1F5F9;
     }
     .btn-install {
       background: var(--teal);
@@ -88,11 +98,14 @@
       border-radius: 9px;
       padding: 8px 16px;
       font-weight: 700;
-      font-size: 0.86rem;
+      font-size: 0.85rem;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
       box-shadow: 0 2px 8px rgba(13, 148, 136, 0.35);
       transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
     }
@@ -100,6 +113,26 @@
       background: var(--teal-dark);
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(13, 148, 136, 0.45);
+    }
+    @media (max-width: 680px) {
+      .install-bar {
+        padding: 10px 14px;
+      }
+      .install-bar-inner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+      .install-bar-left {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+        font-size: 0.83rem;
+      }
+      .btn-install {
+        width: 100%;
+        padding: 9px 14px;
+      }
     }
 
     /* Executive Hero Header — Deep Navy to Slate Blue */
@@ -472,7 +505,7 @@
     /* Sticky Timer Bar — Slate Blue & Teal (No Black/Orange) */
     .timer-bar {
       position: sticky;
-      top: 54px;
+      top: 8px;
       z-index: 900;
       background: #FFFFFF;
       border: 2px solid var(--slate-blue);
@@ -784,13 +817,15 @@
 
   <!-- Pinned Top Installation Bar -->
   <div class="install-bar no-print">
-    <div class="install-bar-left">
-      <span class="install-pill">Mobile &amp; Desktop App</span>
-      <span>Install <strong>FM Practice Quizzes</strong> on your phone or computer for offline study</span>
+    <div class="install-bar-inner">
+      <div class="install-bar-left">
+        <span class="install-pill">Mobile &amp; Desktop App</span>
+        <span class="install-copy">Install <strong>FM Practice Quizzes</strong> on your phone or computer for offline study</span>
+      </div>
+      <button id="topInstallBtn" class="btn-install" onclick="handleInstallClick()">
+        ⬇ Install App
+      </button>
     </div>
-    <button id="topInstallBtn" class="btn-install" onclick="handleInstallClick()">
-      ⬇ Install App
-    </button>
   </div>
 
   <!-- Executive Header -->
