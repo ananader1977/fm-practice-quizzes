@@ -15,48 +15,54 @@
   <style>
     :root {
       --navy: #0F2942;
-      --navy-dark: #091B2C;
       --slate-blue: #1E4E79;
+      --slate-mid: #2B6CB0;
       --teal: #0D9488;
       --teal-dark: #0F766E;
-      --gold: #D97706;
-      --gold-light: #FEF3C7;
-      --gold-border: #F59E0B;
-      --bg: #F8FAFC;
+      --teal-light: #CCFBF1;
+      --teal-soft: #F0FDFA;
+      --sky-soft: #EFF6FF;
+      --bg: #F4F7FA;
       --card: #FFFFFF;
-      --ink: #0F172A;
+      --ink: #0F2942;
+      --body-ink: #1E293B;
       --muted: #475569;
       --border: #CBD5E1;
-      --success: #059669;
-      --success-bg: #ECFDF5;
+      --border-soft: #E2E8F0;
+      --success: #0D9488;
+      --success-bg: #F0FDFA;
       --danger: #DC2626;
       --danger-bg: #FEF2F2;
-      --radius: 12px;
-      --shadow: 0 4px 16px rgba(15, 41, 66, 0.08);
+      --radius: 14px;
+      --shadow-sm: 0 2px 8px rgba(15, 41, 66, 0.05);
+      --shadow: 0 8px 24px rgba(15, 41, 66, 0.08);
+      --shadow-lg: 0 14px 34px rgba(15, 41, 66, 0.12);
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background: var(--bg);
-      color: var(--ink);
-      line-height: 1.55;
+      color: var(--body-ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
-    /* Pinned Top Install Bar */
+
+    /* Pinned Top Install Bar — Crisp Slate Blue & Teal (No Black/Orange) */
     .install-bar {
       position: sticky;
       top: 0;
       z-index: 1000;
-      background: var(--navy-dark);
+      background: linear-gradient(90deg, var(--slate-blue) 0%, #163C61 100%);
       color: #FFFFFF;
-      padding: 10px 16px;
+      padding: 10px 20px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      border-bottom: 2px solid var(--gold);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      gap: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 2px 12px rgba(15, 41, 66, 0.14);
     }
     .install-bar-left {
       display: flex;
@@ -65,92 +71,126 @@
       font-size: 0.9rem;
     }
     .install-pill {
-      background: rgba(217, 119, 6, 0.2);
-      border: 1px solid var(--gold);
-      color: #FCD34D;
+      background: rgba(13, 148, 136, 0.28);
+      border: 1px solid #5EEAD4;
+      color: #CCFBF1;
       font-weight: 700;
       font-size: 0.72rem;
-      padding: 2px 8px;
+      padding: 3px 10px;
       border-radius: 999px;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
     }
     .btn-install {
-      background: var(--gold);
+      background: var(--teal);
       color: #FFFFFF;
-      border: none;
-      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 9px;
       padding: 8px 16px;
       font-weight: 700;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: transform 0.12s ease, background 0.15s ease;
+      box-shadow: 0 2px 8px rgba(13, 148, 136, 0.35);
+      transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
     }
-    .btn-install:hover { background: #B45309; transform: translateY(-1px); }
+    .btn-install:hover {
+      background: var(--teal-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.45);
+    }
 
-    /* Executive Header */
+    /* Executive Hero Header — Deep Navy to Slate Blue */
     .hero {
-      background: linear-gradient(135deg, var(--navy) 0%, var(--slate-blue) 100%);
+      background: linear-gradient(135deg, var(--navy) 0%, var(--slate-blue) 60%, #245B8D 100%);
       color: #FFFFFF;
-      padding: 28px 20px 32px;
+      padding: 34px 20px 38px;
       border-bottom: 4px solid var(--teal);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -80px;
+      top: -80px;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(13, 148, 136, 0.18) 0%, rgba(13, 148, 136, 0) 70%);
+      pointer-events: none;
     }
     .hero-inner {
-      max-width: 1080px;
+      max-width: 1100px;
       margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 20px;
+      gap: 22px;
+      position: relative;
+      z-index: 1;
     }
     .hero-kicker {
-      display: inline-block;
-      background: rgba(13, 148, 136, 0.25);
-      border: 1px solid #5EEAD4;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(94, 234, 212, 0.55);
       color: #CCFBF1;
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 700;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
-      padding: 4px 10px;
+      padding: 4px 12px;
       border-radius: 999px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
     .hero h1 {
       margin: 0 0 6px;
-      font-size: clamp(1.45rem, 2.8vw, 2.1rem);
+      font-size: clamp(1.55rem, 3vw, 2.25rem);
       font-weight: 800;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.015em;
+      color: #FFFFFF;
     }
     .hero-sub {
-      margin: 0 0 10px;
+      margin: 0 0 12px;
       color: #E2E8F0;
-      font-size: 0.98rem;
+      font-size: 1.02rem;
     }
     .hero-meta {
-      font-size: 0.84rem;
-      color: #CBD5E1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.83rem;
+      color: #E2E8F0;
+    }
+    .hero-chip {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
     }
     .user-badge-box {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.22);
-      border-radius: 12px;
-      padding: 12px 16px;
-      min-width: 240px;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 14px;
+      padding: 14px 18px;
+      min-width: 260px;
     }
     .user-badge-name {
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 1.04rem;
       color: #FFFFFF;
     }
     .user-badge-sub {
-      font-size: 0.8rem;
-      color: #CBD5E1;
-      margin-bottom: 8px;
+      font-size: 0.82rem;
+      color: #CCFBF1;
+      margin-bottom: 10px;
+      font-weight: 600;
     }
     .user-actions {
       display: flex;
@@ -161,8 +201,8 @@
     /* Buttons */
     .btn {
       border: none;
-      border-radius: 8px;
-      padding: 9px 15px;
+      border-radius: 9px;
+      padding: 10px 16px;
       font-weight: 600;
       font-size: 0.88rem;
       cursor: pointer;
@@ -172,105 +212,196 @@
       gap: 6px;
       transition: all 0.15s ease;
     }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn-primary { background: var(--teal); color: #FFFFFF; }
-    .btn-primary:hover:not(:disabled) { background: var(--teal-dark); }
-    .btn-navy { background: var(--navy); color: #FFFFFF; }
-    .btn-navy:hover:not(:disabled) { background: var(--slate-blue); }
-    .btn-gold { background: var(--gold); color: #FFFFFF; }
-    .btn-gold:hover:not(:disabled) { background: #B45309; }
+    .btn:disabled { opacity: 0.48; cursor: not-allowed; }
+    .btn-primary {
+      background: var(--teal);
+      color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(13, 148, 136, 0.25);
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: var(--teal-dark);
+      transform: translateY(-1px);
+    }
+    .btn-navy {
+      background: var(--slate-blue);
+      color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(30, 78, 121, 0.22);
+    }
+    .btn-navy:hover:not(:disabled) {
+      background: var(--navy);
+      transform: translateY(-1px);
+    }
     .btn-outline {
       background: #FFFFFF;
       color: var(--navy);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
     }
-    .btn-outline:hover:not(:disabled) { background: #F1F5F9; }
+    .btn-outline:hover:not(:disabled) {
+      background: var(--sky-soft);
+      border-color: var(--slate-blue);
+    }
     .btn-ghost-light {
-      background: rgba(255,255,255,0.14);
+      background: rgba(255, 255, 255, 0.16);
       color: #FFFFFF;
-      border: 1px solid rgba(255,255,255,0.28);
-      padding: 6px 11px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 6px 12px;
       font-size: 0.8rem;
     }
-    .btn-ghost-light:hover { background: rgba(255,255,255,0.24); }
+    .btn-ghost-light:hover { background: rgba(255, 255, 255, 0.26); }
     .btn-danger { background: var(--danger); color: #FFFFFF; }
 
-    /* Container */
+    /* Container & Cards */
     .container {
-      max-width: 1080px;
-      margin: 24px auto 48px;
-      padding: 0 16px;
+      max-width: 1100px;
+      margin: 28px auto 56px;
+      padding: 0 18px;
     }
     .card {
       background: var(--card);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-soft);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 22px;
-      margin-bottom: 20px;
+      padding: 26px;
+      margin-bottom: 22px;
     }
 
-    /* Login Screen */
+    /* Login / Register Portal */
     .auth-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-      align-items: start;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 32px;
+      align-items: center;
     }
-    .form-group { margin-bottom: 14px; }
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 18px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #F8FAFC;
+      border: 1px solid var(--border-soft);
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-size: 0.9rem;
+      color: var(--body-ink);
+    }
+    .feature-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      background: var(--teal-soft);
+      color: var(--teal-dark);
+      font-weight: 800;
+      font-size: 0.85rem;
+    }
+    .auth-panel {
+      background: #F8FAFC;
+      border: 1px solid var(--border-soft);
+      border-radius: 12px;
+      padding: 22px;
+    }
+    .form-group { margin-bottom: 15px; }
     .form-group label {
       display: block;
       font-weight: 600;
       font-size: 0.86rem;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
       color: var(--navy);
     }
     .form-group input, select {
       width: 100%;
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      padding: 11px 13px;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
       font-size: 0.95rem;
       font-family: inherit;
+      background: #FFFFFF;
+      color: var(--navy);
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
     .form-group input:focus {
       outline: none;
       border-color: var(--teal);
-      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.16);
     }
     .tabs {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 8px;
-      margin-bottom: 16px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 10px;
+      background: #E2E8F0;
+      padding: 4px;
+      border-radius: 10px;
+      margin-bottom: 18px;
     }
     .tab-btn {
-      background: #F1F5F9;
+      background: transparent;
       color: var(--muted);
       border: none;
-      padding: 8px 14px;
-      border-radius: 8px;
+      padding: 9px 14px;
+      border-radius: 7px;
       font-weight: 700;
+      font-size: 0.9rem;
       cursor: pointer;
+      transition: all 0.15s ease;
     }
     .tab-btn.active {
-      background: var(--navy);
+      background: var(--slate-blue);
       color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(30, 78, 121, 0.25);
+    }
+
+    /* Overall Progress Bar on Dashboard */
+    .progress-summary-bar {
+      background: linear-gradient(135deg, #F8FAFC 0%, var(--sky-soft) 100%);
+      border: 1px solid #BFDBFE;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .progress-track {
+      width: 100%;
+      max-width: 340px;
+      height: 10px;
+      background: #CBD5E1;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--slate-blue), var(--teal));
+      border-radius: 999px;
+      transition: width 0.3s ease;
     }
 
     /* Audio Toolbar */
     .audio-bar {
-      background: #F1F5F9;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 14px;
-      margin-bottom: 18px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-soft);
+      border-left: 4px solid var(--teal);
+      border-radius: 11px;
+      padding: 11px 16px;
+      margin-bottom: 20px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       gap: 10px;
       justify-content: space-between;
+      box-shadow: var(--shadow-sm);
     }
     .audio-controls {
       display: flex;
@@ -287,86 +418,88 @@
     /* Section Stepper Grid */
     .section-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 14px;
-      margin-top: 14px;
+      grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
     }
     .sec-card {
-      border: 1.5px solid var(--border);
-      border-radius: 11px;
-      padding: 15px;
+      border: 1.5px solid var(--border-soft);
+      border-radius: 12px;
+      padding: 18px;
       background: #FFFFFF;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: transform 0.12s ease, border-color 0.15s ease;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
     }
     .sec-card.unlocked:hover {
       border-color: var(--teal);
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
     }
     .sec-card.locked {
       background: #F8FAFC;
       opacity: 0.72;
     }
     .sec-card.passed {
-      border-color: var(--success);
-      background: linear-gradient(to bottom, #FFFFFF, #F0FDF4);
+      border-color: var(--teal);
+      background: linear-gradient(to bottom, #FFFFFF, var(--teal-soft));
     }
     .sec-badge {
       display: inline-block;
       font-size: 0.74rem;
       font-weight: 700;
-      padding: 2px 8px;
+      padding: 3px 10px;
       border-radius: 999px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
-    .badge-passed { background: var(--success-bg); color: var(--success); border: 1px solid #A7F3D0; }
-    .badge-open { background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; }
+    .badge-passed { background: var(--teal-soft); color: var(--teal-dark); border: 1px solid #99F6E4; }
+    .badge-open { background: var(--sky-soft); color: var(--slate-blue); border: 1px solid #BFDBFE; }
     .badge-locked { background: #E2E8F0; color: #475569; }
     .sec-title {
       font-weight: 700;
-      font-size: 0.98rem;
+      font-size: 1rem;
       color: var(--navy);
       margin: 0 0 6px;
     }
     .sec-meta {
       font-size: 0.82rem;
       color: var(--muted);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
-    /* Sticky Timer Bar */
+    /* Sticky Timer Bar — Slate Blue & Teal (No Black/Orange) */
     .timer-bar {
       position: sticky;
-      top: 52px;
+      top: 54px;
       z-index: 900;
       background: #FFFFFF;
-      border: 2px solid var(--navy);
+      border: 2px solid var(--slate-blue);
       border-radius: 12px;
-      padding: 12px 16px;
+      padding: 12px 18px;
       margin-bottom: 18px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      box-shadow: 0 6px 18px rgba(15, 41, 66, 0.12);
+      box-shadow: var(--shadow);
     }
     .timer-display {
       font-variant-numeric: tabular-nums;
       font-size: 1.35rem;
       font-weight: 800;
-      padding: 6px 14px;
-      border-radius: 8px;
-      background: var(--navy);
+      padding: 6px 16px;
+      border-radius: 9px;
+      background: var(--slate-blue);
       color: #FFFFFF;
       display: inline-flex;
       align-items: center;
       gap: 8px;
     }
     .timer-display.warn {
-      background: var(--gold);
+      background: #0284C7;
       color: #FFFFFF;
     }
     .timer-display.danger {
@@ -386,39 +519,42 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 10px;
-      margin-bottom: 12px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #E2E8F0;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-soft);
     }
     .q-num {
       font-weight: 800;
       color: var(--slate-blue);
-      font-size: 0.95rem;
+      font-size: 0.96rem;
+      background: var(--sky-soft);
+      padding: 4px 12px;
+      border-radius: 999px;
     }
     .q-stem {
-      font-size: 1.08rem;
+      font-size: 1.1rem;
       font-weight: 600;
-      color: var(--ink);
-      margin-bottom: 16px;
+      color: var(--navy);
+      margin-bottom: 18px;
     }
     .options-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 11px;
     }
     .option-btn {
       text-align: left;
       background: #FFFFFF;
       border: 1.5px solid var(--border);
-      border-radius: 10px;
-      padding: 13px 15px;
+      border-radius: 11px;
+      padding: 14px 16px;
       cursor: pointer;
       display: flex;
       align-items: flex-start;
-      gap: 12px;
-      font-size: 0.96rem;
-      color: var(--ink);
-      transition: all 0.12s ease;
+      gap: 13px;
+      font-size: 0.97rem;
+      color: var(--body-ink);
+      transition: all 0.14s ease;
     }
     .option-btn:hover {
       border-color: var(--slate-blue);
@@ -426,12 +562,12 @@
     }
     .option-btn.selected {
       border-color: var(--teal);
-      background: #F0FDFA;
+      background: var(--teal-soft);
       box-shadow: 0 0 0 2px rgba(13, 148, 136, 0.2);
     }
     .opt-letter {
-      min-width: 28px;
-      height: 28px;
+      min-width: 30px;
+      height: 30px;
       border-radius: 50%;
       background: #E2E8F0;
       color: var(--navy);
@@ -440,18 +576,21 @@
       align-items: center;
       justify-content: center;
       font-size: 0.86rem;
+      flex-shrink: 0;
     }
     .option-btn.selected .opt-letter {
       background: var(--teal);
       color: #FFFFFF;
     }
     .guess-row {
-      margin-top: 14px;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-soft);
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
     }
     .guess-label {
       display: inline-flex;
@@ -463,25 +602,60 @@
       user-select: none;
     }
 
-    /* Certificate Styling */
+    /* Certificate Styling — Deep Navy, Slate Blue & Teal (Zero Black/Orange) */
     .cert-wrapper {
-      margin: 20px 0;
+      margin: 16px 0;
       overflow-x: auto;
     }
     .certificate {
       background: #FFFFFF;
       border: 8px double var(--navy);
       border-radius: 14px;
-      padding: 32px 28px;
+      padding: 34px 30px;
       max-width: 820px;
       margin: 0 auto;
       text-align: center;
       position: relative;
-      box-shadow: 0 10px 30px rgba(15, 41, 66, 0.14);
+      box-shadow: var(--shadow-lg);
     }
     .certificate.master {
-      border: 10px double var(--gold);
-      background: linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 22%, #FFFFFF 78%, #FFFBEB 100%);
+      border: 10px double var(--navy);
+      outline: 4px solid var(--teal);
+      outline-offset: -18px;
+      background:
+        radial-gradient(circle at top center, rgba(204, 251, 241, 0.45) 0%, rgba(255, 255, 255, 0) 50%),
+        linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 30%, #FFFFFF 70%, #F0FDFA 100%);
+      padding: 40px 34px;
+    }
+    .master-emblem-wrap {
+      margin: 4px auto 12px;
+    }
+    .master-emblem-img {
+      width: 96px;
+      height: 96px;
+      border-radius: 18px;
+      border: 3px solid var(--teal);
+      box-shadow: 0 6px 18px rgba(15, 41, 66, 0.2);
+      object-fit: cover;
+    }
+    .rosette-seal {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #14B8A6 0%, var(--teal) 65%, var(--slate-blue) 100%);
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 0.72rem;
+      line-height: 1.2;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: 4px double #CCFBF1;
+      box-shadow: 0 0 0 4px var(--teal), 0 8px 20px rgba(13, 148, 136, 0.3);
+      margin: 6px auto;
     }
     .cert-corner {
       font-size: 0.76rem;
@@ -490,9 +664,6 @@
       text-transform: uppercase;
       color: var(--teal-dark);
       margin-bottom: 6px;
-    }
-    .certificate.master .cert-corner {
-      color: #B45309;
     }
     .cert-title {
       font-family: Georgia, "Times New Roman", serif;
@@ -505,32 +676,32 @@
       font-size: clamp(1.4rem, 2.8vw, 2rem);
       font-weight: 700;
       color: var(--slate-blue);
-      border-bottom: 2px solid var(--gold);
+      border-bottom: 2.5px solid var(--teal);
       display: inline-block;
-      padding: 4px 24px;
+      padding: 4px 28px;
       margin: 10px 0;
     }
     .cert-body {
       max-width: 640px;
       margin: 10px auto 18px;
-      color: #334155;
+      color: var(--body-ink);
       font-size: 0.98rem;
     }
     .cert-seal {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 78px;
-      height: 78px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
-      background: radial-gradient(circle, #FDE68A 0%, #D97706 100%);
+      background: radial-gradient(circle, #14B8A6 0%, var(--teal) 100%);
       color: #FFFFFF;
       font-weight: 800;
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      border: 3px dashed #FFFBEB;
-      box-shadow: 0 4px 12px rgba(217, 119, 6, 0.35);
+      border: 3px dashed #CCFBF1;
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
       margin: 8px auto;
     }
     .cert-footer {
@@ -541,7 +712,7 @@
       gap: 16px;
       margin-top: 22px;
       padding-top: 14px;
-      border-top: 1px solid #E2E8F0;
+      border-top: 1px solid var(--border-soft);
       font-size: 0.84rem;
       color: var(--muted);
       text-align: left;
@@ -549,21 +720,21 @@
 
     /* Review List */
     .review-item {
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-soft);
       border-left: 5px solid var(--border);
       border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
       background: #FFFFFF;
     }
-    .review-item.correct { border-left-color: var(--success); }
+    .review-item.correct { border-left-color: var(--teal); }
     .review-item.wrong { border-left-color: var(--danger); }
     .explanation-box {
       margin-top: 10px;
       background: #F8FAFC;
-      border: 1px solid #E2E8F0;
+      border: 1px solid var(--border-soft);
       border-radius: 8px;
-      padding: 10px 12px;
+      padding: 11px 14px;
       font-size: 0.9rem;
     }
 
@@ -571,7 +742,8 @@
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.65);
+      background: rgba(15, 41, 66, 0.6);
+      backdrop-filter: blur(4px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -581,24 +753,25 @@
     .modal-backdrop.open { display: flex; }
     .modal-box {
       background: #FFFFFF;
-      border-radius: 14px;
+      border-radius: 16px;
       max-width: 540px;
       width: 100%;
-      padding: 24px;
-      box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+      padding: 26px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-soft);
     }
 
     .hidden { display: none !important; }
-    .text-success { color: var(--success); font-weight: 700; }
+    .text-success { color: var(--teal-dark); font-weight: 700; }
     .text-danger { color: var(--danger); font-weight: 700; }
     .alert {
-      padding: 12px 15px;
-      border-radius: 9px;
-      margin-bottom: 14px;
+      padding: 13px 16px;
+      border-radius: 10px;
+      margin-bottom: 16px;
       font-size: 0.92rem;
     }
     .alert-danger { background: var(--danger-bg); color: #991B1B; border: 1px solid #FECACA; }
-    .alert-success { background: var(--success-bg); color: #065F46; border: 1px solid #A7F3D0; }
+    .alert-success { background: var(--teal-soft); color: #115E59; border: 1px solid #99F6E4; }
 
     @media print {
       .install-bar, .hero, .audio-bar, .no-print { display: none !important; }
@@ -627,7 +800,12 @@
         <span class="hero-kicker">Exam-Style Practice for Facility Managers</span>
         <h1>Facilities Management Practice Quizzes</h1>
         <p class="hero-sub">Operations &amp; Maintenance — 200 Original Practice Questions with Answers &amp; Explanations</p>
-        <div class="hero-meta">By <strong>Anas Nader</strong> • Published by <strong>ADN Soft</strong> (UAE) • Pass Mark: <strong>Above 80%</strong> • Timer: <strong>1 Min / Question</strong></div>
+        <div class="hero-meta">
+          <span class="hero-chip">Author: <strong>Anas Nader</strong></span>
+          <span class="hero-chip">Publisher: <strong>ADN Soft</strong> (UAE)</span>
+          <span class="hero-chip">Pass Mark: <strong>Above 80%</strong></span>
+          <span class="hero-chip">Timer: <strong>1 Min / Question</strong></span>
+        </div>
       </div>
       <div id="userHeaderBox" class="user-badge-box hidden">
         <div class="user-badge-name" id="hdrFullName">—</div>
@@ -656,10 +834,10 @@
           <option value="1.15">1.15x</option>
           <option value="1.3">1.3x</option>
         </select>
-        <label style="font-size:0.82rem;display:inline-flex;align-items:center;gap:4px;cursor:pointer;">
+        <label style="font-size:0.84rem;display:inline-flex;align-items:center;gap:5px;cursor:pointer;color:var(--navy);font-weight:500;">
           <input type="checkbox" id="autoReadToggle" /> Auto-read questions
         </label>
-        <button class="btn btn-outline" style="padding:5px 10px;font-size:0.82rem;" onclick="stopSpeech()">⏹ Stop</button>
+        <button class="btn btn-outline" style="padding:6px 12px;font-size:0.82rem;" onclick="stopSpeech()">⏹ Stop</button>
       </div>
     </div>
 
@@ -667,17 +845,29 @@
     <section id="authView" class="card">
       <div class="auth-grid">
         <div>
-          <h2 style="margin-top:0;color:var(--navy);">Candidate Login &amp; Progress Portal</h2>
-          <p style="color:var(--muted);font-size:0.94rem;">
+          <span style="display:inline-block;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--teal-dark);background:var(--teal-soft);padding:3px 10px;border-radius:999px;margin-bottom:8px;">
+            Interactive Exam Simulator
+          </span>
+          <h2 style="margin:0 0 10px;color:var(--navy);font-size:1.55rem;">Candidate Login &amp; Progress Portal</h2>
+          <p style="color:var(--muted);font-size:0.95rem;margin-top:0;">
             Sign in with your username and password to track your progress across all <strong>8 sections (200 questions)</strong>. You can pause or close the app at any time and resume later.
           </p>
-          <ul style="color:var(--muted);font-size:0.9rem;padding-left:20px;">
-            <li><strong>Sequential Progression:</strong> Score <strong>above 80%</strong> to unlock the next section.</li>
-            <li><strong>1-Minute Per Question Timer:</strong> Exceeding 60 seconds on any question marks the quiz as failed for retake.</li>
-            <li><strong>Official Certificates:</strong> Earn a personalized certificate after every passed section, plus a <strong>Master Certificate</strong> upon completing all 200 questions.</li>
+          <ul class="feature-list">
+            <li>
+              <span class="feature-icon">1</span>
+              <div><strong>Sequential Progression:</strong> Score <strong>above 80%</strong> to unlock the next section.</div>
+            </li>
+            <li>
+              <span class="feature-icon">2</span>
+              <div><strong>1-Minute Per Question Timer:</strong> Exceeding 60 seconds on any question marks the quiz as failed for retake.</div>
+            </li>
+            <li>
+              <span class="feature-icon">3</span>
+              <div><strong>Official Certificates:</strong> Earn a personalized certificate after every passed section, plus a <strong>Master Certificate</strong> upon completing all 200 questions.</div>
+            </li>
           </ul>
         </div>
-        <div>
+        <div class="auth-panel">
           <div class="tabs">
             <button id="tabLogin" class="tab-btn active" onclick="switchAuthTab('login')">Sign In</button>
             <button id="tabRegister" class="tab-btn" onclick="switchAuthTab('register')">Create Account</button>
@@ -693,7 +883,7 @@
               <label for="loginPassword">Password</label>
               <input id="loginPassword" type="password" required placeholder="Enter your password" autocomplete="current-password" />
             </div>
-            <button type="submit" class="btn btn-primary" style="width:100%;">Log In &amp; Resume Progress</button>
+            <button type="submit" class="btn btn-primary" style="width:100%;padding:12px;">Log In &amp; Resume Progress</button>
           </form>
 
           <form id="registerForm" class="hidden" onsubmit="handleRegister(event)">
@@ -709,7 +899,7 @@
               <label for="regPassword">Password</label>
               <input id="regPassword" type="password" required minlength="4" placeholder="Create a password (min 4 chars)" autocomplete="new-password" />
             </div>
-            <button type="submit" class="btn btn-navy" style="width:100%;">Create Account &amp; Start Section 1</button>
+            <button type="submit" class="btn btn-navy" style="width:100%;padding:12px;">Create Account &amp; Start Section 1</button>
           </form>
         </div>
       </div>
@@ -722,27 +912,35 @@
         <button class="btn btn-primary" onclick="resumeSavedAttempt()">Resume Saved Attempt</button>
       </div>
 
-      <div id="masterCertBanner" class="card hidden" style="border:2px solid var(--gold);background:linear-gradient(135deg,#FFFBEB,#FFFFFF);">
+      <div id="masterCertBanner" class="card hidden" style="border:2px solid var(--teal);background:linear-gradient(135deg,var(--teal-soft),#FFFFFF);">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
           <div>
-            <span class="install-pill" style="background:var(--gold);color:#FFF;">🏆 All 200 Questions Completed</span>
-            <h2 style="margin:6px 0 4px;color:var(--navy);">Master Certificate Unlocked!</h2>
+            <span class="sec-badge badge-passed" style="margin-bottom:4px;">🏆 All 200 Questions Completed</span>
+            <h2 style="margin:4px 0;color:var(--navy);">Master Certificate Unlocked!</h2>
             <p style="margin:0;color:var(--muted);">Congratulations! You passed all 8 sections above 80%.</p>
           </div>
-          <button class="btn btn-gold" onclick="openMasterCertificate()">View Master Certificate</button>
+          <button class="btn btn-primary" onclick="openMasterCertificate()">View Master Certificate</button>
         </div>
       </div>
 
       <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
-          <div>
-            <h2 style="margin:0 0 4px;color:var(--navy);">Course Sections (1 to 8)</h2>
-            <p style="margin:0;color:var(--muted);font-size:0.92rem;">Complete each section with a score strictly <strong>above 80%</strong> to unlock the next section and earn your certificate.</p>
+        <div class="progress-summary-bar">
+          <div style="flex:1;min-width:220px;">
+            <div style="font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--slate-blue);">Overall Course Progress</div>
+            <div style="font-size:1.15rem;font-weight:800;color:var(--navy);" id="overallProgressText">0 of 8 Sections Passed (0%)</div>
+            <div class="progress-track">
+              <div class="progress-fill" id="overallProgressFill" style="width:0%;"></div>
+            </div>
           </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
             <button id="mixedPracticeBtn" class="btn btn-outline" onclick="startMixedQuiz()" title="Available once Section 1 is passed">🔀 Mixed Practice Set (20 Qs)</button>
             <button class="btn btn-navy" onclick="showCertificatesGallery()">🎓 My Certificates</button>
           </div>
+        </div>
+
+        <div>
+          <h2 style="margin:0 0 4px;color:var(--navy);">Course Sections (1 to 8)</h2>
+          <p style="margin:0;color:var(--muted);font-size:0.92rem;">Complete each section with a score strictly <strong>above 80%</strong> to unlock the next section and earn your certificate.</p>
         </div>
         <div id="sectionsGrid" class="section-grid"></div>
       </div>
@@ -752,7 +950,7 @@
     <section id="quizView" class="hidden">
       <div class="timer-bar no-print">
         <div>
-          <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;color:var(--muted);" id="quizSecLabel">Section 1</div>
+          <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;color:var(--slate-blue);" id="quizSecLabel">Section 1</div>
           <div style="font-weight:800;color:var(--navy);" id="quizProgressLabel">Question 1 of 28</div>
         </div>
         <div id="timerBox" class="timer-display">⏱ 01:00</div>
@@ -776,7 +974,7 @@
           </label>
           <div style="display:flex;gap:10px;">
             <button id="nextBtn" class="btn btn-primary" onclick="goNextQuestion()">Next Question →</button>
-            <button id="submitSecBtn" class="btn btn-gold hidden" onclick="finishSection()">Submit Section &amp; Grade</button>
+            <button id="submitSecBtn" class="btn btn-navy hidden" onclick="finishSection()">Submit Section &amp; Grade</button>
           </div>
         </div>
       </div>
@@ -814,15 +1012,15 @@
         <button class="btn btn-outline" style="padding:4px 10px;" onclick="closeInstallModal()">✕</button>
       </div>
       <p style="color:var(--muted);font-size:0.92rem;">Install this quiz as a standalone offline app on your mobile phone or desktop computer:</p>
-      <div style="background:#F8FAFC;border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px;font-size:0.88rem;">
+      <div style="background:#F8FAFC;border:1px solid var(--border-soft);border-radius:10px;padding:12px;margin-bottom:10px;font-size:0.88rem;">
         <strong>📱 iPhone / iPad (Safari):</strong><br/>
         Tap the <strong>Share</strong> icon (square with upward arrow) at the bottom/top of Safari, scroll down, and tap <strong>"Add to Home Screen"</strong>.
       </div>
-      <div style="background:#F8FAFC;border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px;font-size:0.88rem;">
+      <div style="background:#F8FAFC;border:1px solid var(--border-soft);border-radius:10px;padding:12px;margin-bottom:10px;font-size:0.88rem;">
         <strong>🤖 Android (Chrome):</strong><br/>
         Tap the <strong>⋮ Menu</strong> in the top-right corner of Chrome and select <strong>"Install app"</strong> or <strong>"Add to Home screen"</strong>.
       </div>
-      <div style="background:#F8FAFC;border:1px solid var(--border);border-radius:10px;padding:12px;font-size:0.88rem;">
+      <div style="background:#F8FAFC;border:1px solid var(--border-soft);border-radius:10px;padding:12px;font-size:0.88rem;">
         <strong>💻 Windows / Mac Desktop (Chrome / Edge):</strong><br/>
         Click the <strong>Install icon (⊕)</strong> on the right side of the browser address bar, or open <strong>Menu → Save and share → Install page as app</strong>.
       </div>
@@ -950,7 +1148,7 @@
         fullName,
         pwHash,
         createdAt: new Date().toISOString(),
-        passedSections: {}, // { 1: { scorePct, correct, total, date, certId } }
+        passedSections: {},
         activeAttempt: null
       };
       saveUsers(users);
@@ -1021,8 +1219,11 @@
 
       const passed = currentUser.passedSections || {};
       const passedCount = Object.keys(passed).length;
+      const pct = Math.round((passedCount / 8) * 100);
 
-      // Resume banner
+      document.getElementById('overallProgressText').textContent = `${passedCount} of 8 Sections Passed (${pct}%)`;
+      document.getElementById('overallProgressFill').style.width = `${pct}%`;
+
       const resumeBanner = document.getElementById('resumeBanner');
       if (currentUser.activeAttempt) {
         const att = currentUser.activeAttempt;
@@ -1034,7 +1235,6 @@
         resumeBanner.classList.add('hidden');
       }
 
-      // Master cert banner
       const masterBanner = document.getElementById('masterCertBanner');
       if (passedCount === 8) {
         masterBanner.classList.remove('hidden');
@@ -1042,10 +1242,8 @@
         masterBanner.classList.add('hidden');
       }
 
-      // Mixed practice button
       document.getElementById('mixedPracticeBtn').disabled = passedCount < 1;
 
-      // Render 8 sections
       const grid = document.getElementById('sectionsGrid');
       grid.innerHTML = '';
       QUIZ_SECTIONS.forEach((sec) => {
@@ -1068,7 +1266,7 @@
         card.innerHTML = `
           <div>
             ${badgeHtml}
-            <div style="font-size:0.78rem;color:var(--muted);font-weight:700;">SECTION ${sec.id} • Q${firstQ}–Q${lastQ}</div>
+            <div style="font-size:0.78rem;color:var(--slate-blue);font-weight:700;">SECTION ${sec.id} • Q${firstQ}–Q${lastQ}</div>
             <h3 class="sec-title">${sec.title}</h3>
             <p class="sec-meta">${qCount} Questions • Pass &gt; 80% (${Math.floor(qCount * 0.8) + 1}/${qCount} required)</p>
           </div>
@@ -1076,11 +1274,15 @@
             <button class="btn ${isPassed ? 'btn-outline' : 'btn-primary'}" style="flex:1;" ${!isUnlocked ? 'disabled' : ''} onclick="startSectionQuiz(${sec.id})">
               ${isPassed ? 'Retake Section' : 'Start Section'}
             </button>
-            ${isPassed ? `<button class="btn btn-gold" onclick="viewSectionCert(${sec.id})" title="View Certificate">🎓</button>` : ''}
+            ${isPassed ? `<button class="btn btn-navy" onclick="viewSectionCert(${sec.id})" title="View Certificate">🎓</button>` : ''}
           </div>
         `;
         grid.appendChild(card);
       });
+    }
+
+    function viewSectionCert(sectionId) {
+      showCertificatesGallery();
     }
 
     // --- Active Quiz & 1-Minute Per-Question Timer ---
@@ -1095,8 +1297,8 @@
         sectionTitle: sec.title,
         questions: sec.questions,
         currentIndex: 0,
-        answers: {}, // { qNum: 'A' }
-        guesses: {}, // { qNum: true }
+        answers: {},
+        guesses: {},
         secondsLeft: 60
       };
       saveCurrentUserRecord();
@@ -1110,7 +1312,6 @@
         if (passedIds.includes(sec.id)) pool = pool.concat(sec.questions);
       });
       if (!pool.length) return;
-      // Shuffle and pick up to 20
       for (let i = pool.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [pool[i], pool[j]] = [pool[j], pool[i]];
@@ -1214,7 +1415,7 @@
       if (!att) return;
       if (att.currentIndex < att.questions.length - 1) {
         att.currentIndex++;
-        att.secondsLeft = 60; // Reset 1-minute timer for next question
+        att.secondsLeft = 60;
         saveCurrentUserRecord();
         stopSpeech();
         renderCurrentQuestion();
@@ -1302,7 +1503,7 @@
 
       const total = att.questions.length;
       const scorePct = (correctCount / total) * 100;
-      const passed = scorePct > 80; // Strictly above 80% as requested
+      const passed = scorePct > 80;
       const todayStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
       if (att.mode === 'section' && passed) {
@@ -1347,13 +1548,12 @@
         <h2 style="margin:6px 0;color:var(--navy);">${att.mode === 'mixed' ? att.sectionTitle : `Section ${att.sectionId}: ${att.sectionTitle}`}</h2>
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
           ${hasNext ? `<button class="btn btn-primary" onclick="startSectionQuiz(${nextSecId})">Proceed to Section ${nextSecId} →</button>` : ''}
-          ${all8Passed ? `<button class="btn btn-gold" onclick="openMasterCertificate()">🏆 Claim Master Certificate (200 Questions)</button>` : ''}
+          ${all8Passed ? `<button class="btn btn-primary" onclick="openMasterCertificate()">🏆 Claim Master Certificate (200 Questions)</button>` : ''}
           <button class="btn btn-outline" onclick="${att.mode === 'mixed' ? 'startMixedQuiz()' : `startSectionQuiz(${att.sectionId})`}">↻ Repeat Section</button>
           <button class="btn btn-outline" onclick="showDashboard()">← All Sections</button>
         </div>
       `;
 
-      // Show earned section certificate immediately if passed
       const certContainer = document.getElementById('earnedCertContainer');
       if (att.mode === 'section' && passed) {
         certContainer.classList.remove('hidden');
@@ -1362,7 +1562,6 @@
         certContainer.classList.add('hidden');
       }
 
-      // Render detailed answer review
       const revList = document.getElementById('reviewList');
       revList.innerHTML = '';
       att.questions.forEach(q => {
@@ -1378,7 +1577,7 @@
               <span class="${isCorrect ? 'text-success' : 'text-danger'}" style="margin-left:8px;">
                 ${isCorrect ? '✓ Correct' : '✗ Incorrect'}
               </span>
-              ${wasGuessed ? '<span class="install-pill" style="margin-left:6px;background:#FEF3C7;color:#92400E;">Guessed</span>' : ''}
+              ${wasGuessed ? '<span class="sec-badge badge-open" style="margin-left:6px;">Guessed</span>' : ''}
             </div>
             <button class="btn btn-outline" style="padding:4px 10px;font-size:0.8rem;" onclick='speakText(${JSON.stringify(`Question ${q.num}. Correct answer is ${q.answer}. ${q.explanation}`)})'>
               🔊 Listen to Explanation
@@ -1397,7 +1596,7 @@
       });
     }
 
-    // --- Certificates Rendering & PNG Download ---
+    // --- Certificates Rendering & PNG Download (Navy, Slate Blue & Teal Theme) ---
     function buildSectionCertificateCard(sectionId) {
       const sec = QUIZ_SECTIONS.find(s => s.id === sectionId);
       const info = currentUser.passedSections[sectionId];
@@ -1406,25 +1605,24 @@
         <div class="card">
           <div class="cert-wrapper">
             <div class="certificate" id="cert-sec-${sectionId}">
-              <div class="cert-corner">ADN Soft • Facilities Management Practice Series</div>
-              <h2 class="cert-title">Certificate of Section Completion</h2>
-              <div style="color:var(--muted);font-size:0.92rem;">This certifies that</div>
+              <div class="cert-corner">ADN Soft • FM Practice Quizzes</div>
+              <h2 class="cert-title">Section Completion Certificate</h2>
+              <div style="color:var(--muted);font-size:0.9rem;">Awarded to</div>
               <div class="cert-recipient">${currentUser.fullName}</div>
-              <div style="font-size:0.82rem;color:var(--muted);">Candidate ID: @${currentUser.username}</div>
-              <p class="cert-body">
-                has successfully completed and passed <strong>Section ${sec.id}: ${sec.title}</strong>
-                (${info.total} Scenario-Based Questions) from <em>Facilities Management Practice Quizzes: Operations &amp; Maintenance</em>
-                with a verified score of <strong>${info.scorePct.toFixed(1)}% (${info.correct}/${info.total})</strong>, exceeding the 80% pass threshold.
+              <div style="font-size:0.84rem;color:var(--muted);font-weight:600;">@${currentUser.username}</div>
+              <p class="cert-body" style="margin:16px auto;">
+                <strong style="font-size:1.08rem;color:var(--navy);">Section ${sec.id}: ${sec.title}</strong><br/>
+                <span style="color:var(--teal-dark);font-weight:700;">Score: ${info.scorePct.toFixed(1)}% &bull; Passed (&gt; 80%)</span>
               </p>
               <div class="cert-seal">PASSED<br/>&gt; 80%</div>
               <div class="cert-footer">
                 <div>
-                  <strong>Date Issued:</strong> ${info.date}<br/>
-                  <strong>Certificate ID:</strong> ${info.certId}
+                  <strong>Date:</strong> ${info.date}<br/>
+                  <span>ID: ${info.certId}</span>
                 </div>
                 <div style="text-align:right;">
                   <strong>Anas Nader</strong><br/>
-                  Author &amp; COO, ADN Soft (UAE)
+                  <span>ADN Soft &bull; UAE</span>
                 </div>
               </div>
             </div>
@@ -1449,35 +1647,38 @@
         <div class="card">
           <div class="cert-wrapper">
             <div class="certificate master" id="cert-master">
-              <div class="cert-corner">★ Grand Master Distinction • 200 Practice Questions ★</div>
-              <h2 class="cert-title">Master Certificate of Excellence</h2>
-              <div style="color:var(--muted);font-size:0.95rem;">Be it known that</div>
-              <div class="cert-recipient">${currentUser.fullName}</div>
-              <div style="font-size:0.84rem;color:var(--muted);">Registered Candidate: @${currentUser.username}</div>
-              <p class="cert-body">
-                has demonstrated comprehensive mastery across all <strong>8 Core Domains and all 200 Practice Questions</strong>
-                of <em>Facilities Management Practice Quizzes: Operations &amp; Maintenance</em>, achieving scores above 80% in every section
-                with an overall cumulative average of <strong>${avgScore.toFixed(1)}%</strong>.
-              </p>
-              <div style="font-size:0.8rem;color:var(--navy);font-weight:700;margin-bottom:8px;">
-                1. Asset &amp; Maintenance • 2. Building Systems • 3. Emergency Continuity • 4. Compliance &amp; Safety<br/>
-                5. Finance &amp; Budgeting • 6. Contracts &amp; Vendors • 7. Data &amp; Metrics • 8. Occupant Services &amp; Sustainability
+              <div class="master-emblem-wrap">
+                <img src="./icon-512.png" alt="FM 200 Quizzes — ADN Soft" class="master-emblem-img" />
               </div>
-              <div class="cert-seal" style="width:92px;height:92px;font-size:0.76rem;">200 Qs<br/>MASTER<br/>CERTIFIED</div>
-              <div class="cert-footer">
+              <h2 class="cert-title" style="margin-bottom:6px;">Master Certificate of Excellence</h2>
+              <div style="color:var(--muted);font-size:0.92rem;">Awarded to</div>
+              <div class="cert-recipient">${currentUser.fullName}</div>
+              <div style="font-size:0.86rem;color:var(--muted);font-weight:600;">@${currentUser.username}</div>
+              <p class="cert-body" style="margin:18px auto;">
+                <strong style="font-size:1.08rem;color:var(--navy);">200 Practice Questions &bull; All 8 Sections Completed</strong><br/>
+                <span style="color:var(--teal-dark);font-weight:700;">Average Score: ${avgScore.toFixed(1)}% &bull; Passed (&gt; 80%)</span>
+              </p>
+              <div class="cert-footer" style="align-items:center;">
                 <div>
-                  <strong>Completion Date:</strong> ${latestDate}<br/>
-                  <strong>Master Credential ID:</strong> ${masterId}
+                  <strong style="color:var(--navy);">Date: ${latestDate}</strong><br/>
+                  <span>ID: ${masterId}</span>
+                </div>
+                <div style="text-align:center;">
+                  <div class="rosette-seal">
+                    <span>200 Qs</span>
+                    <span style="font-size:0.84rem;color:#CCFBF1;">MASTER</span>
+                    <span>CERTIFIED</span>
+                  </div>
                 </div>
                 <div style="text-align:right;">
-                  <strong>Anas Nader</strong><br/>
-                  Author &amp; Chief Operating Officer, ADN Soft (UAE)
+                  <strong style="font-family:Georgia,serif;font-size:1.1rem;color:var(--navy);">Anas Nader</strong><br/>
+                  <span>Author &amp; COO, ADN Soft &bull; UAE</span>
                 </div>
               </div>
             </div>
           </div>
           <div class="no-print" style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
-            <button class="btn btn-gold" onclick="downloadCertificatePNG('master', 0)">⬇ Download Master Certificate (PNG)</button>
+            <button class="btn btn-primary" onclick="downloadCertificatePNG('master', 0)">⬇ Download Master Certificate (PNG)</button>
             <button class="btn btn-outline" onclick="window.print()">🖨 Print / Save as PDF</button>
           </div>
         </div>
@@ -1494,7 +1695,7 @@
       const passedIds = Object.keys(passed).map(Number).sort((a,b) => a - b);
 
       if (!passedIds.length) {
-        list.innerHTML = `<div class="card"><p style="color:var(--muted);margin:0;">No certificates earned yet. Pass Section 1 with a score above 80% to earn your first certificate!</p></div>`;
+        list.innerHTML = `<div class="card"><p style="color:var(--muted);margin:0;">No certificates earned yet. Pass Section 1 (&gt; 80%) to earn your first certificate.</p></div>`;
         return;
       }
       let html = '';
@@ -1511,124 +1712,217 @@
       showCertificatesGallery();
     }
 
-    // High-resolution Canvas PNG Generator for Certificates
+    function drawFM200EmblemOnCanvas(ctx, cx, cy, size) {
+      const x = cx - size / 2;
+      const y = cy - size / 2;
+      const r = size * 0.16;
+
+      ctx.save();
+      ctx.shadowColor = 'rgba(15, 41, 66, 0.22)';
+      ctx.shadowBlur = 14;
+      ctx.shadowOffsetY = 5;
+      ctx.beginPath();
+      ctx.roundRect(x, y, size, size, r);
+      ctx.fillStyle = '#0F2942';
+      ctx.fill();
+      ctx.restore();
+
+      const pad = size * 0.06;
+      ctx.beginPath();
+      ctx.roundRect(x + pad, y + pad, size - pad * 2, size - pad * 2, r * 0.8);
+      ctx.fillStyle = '#163859';
+      ctx.fill();
+      ctx.strokeStyle = '#0D9488';
+      ctx.lineWidth = Math.max(3, size * 0.032);
+      ctx.stroke();
+
+      ctx.fillStyle = '#14B8A6';
+      ctx.fillRect(x + size * 0.22, y + size * 0.67, size * 0.56, Math.max(3, size * 0.024));
+
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `bold ${Math.round(size * 0.28)}px sans-serif`;
+      ctx.fillText('FM', cx, y + size * 0.37);
+
+      ctx.fillStyle = '#5EEAD4';
+      ctx.font = `bold ${Math.round(size * 0.105)}px sans-serif`;
+      ctx.fillText('200 QUIZZES', cx, y + size * 0.55);
+
+      ctx.fillStyle = '#E2E8F0';
+      ctx.font = `bold ${Math.round(size * 0.10)}px sans-serif`;
+      ctx.fillText('ADN SOFT', cx, y + size * 0.80);
+      ctx.textBaseline = 'alphabetic';
+    }
+
     function downloadCertificatePNG(type, sectionId) {
+      const isMaster = type === 'master';
       const canvas = document.createElement('canvas');
       canvas.width = 1600;
-      canvas.height = 1120;
+      canvas.height = isMaster ? 1140 : 1080;
       const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
 
-      const isMaster = type === 'master';
-      // Background
-      ctx.fillStyle = isMaster ? '#FFFDF7' : '#FFFFFF';
-      ctx.fillRect(0, 0, 1600, 1120);
-
-      // Outer & inner borders
-      ctx.strokeStyle = isMaster ? '#D97706' : '#0F2942';
-      ctx.lineWidth = 18;
-      ctx.strokeRect(42, 42, 1516, 1036);
-
-      ctx.strokeStyle = isMaster ? '#0F2942' : '#0D9488';
-      ctx.lineWidth = 4;
-      ctx.strokeRect(70, 70, 1460, 980);
-
-      // Header kicker
-      ctx.textAlign = 'center';
-      ctx.fillStyle = isMaster ? '#B45309' : '#0F766E';
-      ctx.font = 'bold 24px sans-serif';
-      ctx.fillText(
-        isMaster
-          ? '★ GRAND MASTER DISTINCTION • 200 PRACTICE QUESTIONS ★'
-          : 'ADN SOFT • FACILITIES MANAGEMENT PRACTICE SERIES',
-        800, 155
-      );
-
-      // Main Title
-      ctx.fillStyle = '#0F2942';
-      ctx.font = 'bold 64px Georgia, serif';
-      ctx.fillText(
-        isMaster ? 'Master Certificate of Excellence' : 'Certificate of Section Completion',
-        800, 240
-      );
-
-      // Subtitle
-      ctx.fillStyle = '#475569';
-      ctx.font = '28px sans-serif';
-      ctx.fillText(isMaster ? 'Be it known that' : 'This certifies that', 800, 315);
-
-      // Recipient Name
-      ctx.fillStyle = '#1E4E79';
-      ctx.font = 'bold 58px Georgia, serif';
-      ctx.fillText(currentUser.fullName, 800, 405);
-
-      // Gold underline
-      ctx.strokeStyle = '#D97706';
-      ctx.lineWidth = 4;
-      ctx.beginPath();
-      ctx.moveTo(420, 425);
-      ctx.lineTo(1180, 425);
-      ctx.stroke();
-
-      // Username
-      ctx.fillStyle = '#64748B';
-      ctx.font = '24px sans-serif';
-      ctx.fillText(`Registered Candidate: @${currentUser.username}`, 800, 468);
-
-      // Body lines
-      ctx.fillStyle = '#1E293B';
-      ctx.font = '28px sans-serif';
       if (isMaster) {
+        ctx.fillStyle = '#F8FAFC';
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.strokeStyle = '#E2E8F0';
+        ctx.lineWidth = 1;
+        for (let gx = 110; gx < w - 110; gx += 60) {
+          ctx.beginPath(); ctx.moveTo(gx, 100); ctx.lineTo(gx, h - 100); ctx.stroke();
+        }
+        for (let gy = 100; gy < h - 100; gy += 60) {
+          ctx.beginPath(); ctx.moveTo(110, gy); ctx.lineTo(w - 110, gy); ctx.stroke();
+        }
+
+        ctx.strokeStyle = '#0F2942'; ctx.lineWidth = 16; ctx.strokeRect(30, 30, w - 60, h - 60);
+        ctx.strokeStyle = '#1E4E79'; ctx.lineWidth = 8;  ctx.strokeRect(56, 56, w - 112, h - 112);
+        ctx.strokeStyle = '#0D9488'; ctx.lineWidth = 4;  ctx.strokeRect(74, 74, w - 148, h - 148);
+
+        [[62, 62], [w - 62, 62], [62, h - 62], [w - 62, h - 62]].forEach(([cx, cy]) => {
+          ctx.beginPath(); ctx.arc(cx, cy, 22, 0, Math.PI * 2);
+          ctx.fillStyle = '#0F2942'; ctx.fill();
+          ctx.strokeStyle = '#0D9488'; ctx.lineWidth = 4; ctx.stroke();
+          ctx.beginPath(); ctx.arc(cx, cy, 9, 0, Math.PI * 2);
+          ctx.fillStyle = '#5EEAD4'; ctx.fill();
+        });
+
+        drawFM200EmblemOnCanvas(ctx, w / 2, 196, 156);
+
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#0F2942';
+        ctx.font = 'bold 64px Georgia, serif';
+        ctx.fillText('Master Certificate of Excellence', w / 2, 342);
+
+        ctx.strokeStyle = '#0D9488'; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.moveTo(440, 392); ctx.lineTo(w - 440, 392); ctx.stroke();
+
+        ctx.fillStyle = '#475569';
+        ctx.font = '26px sans-serif';
+        ctx.fillText('Awarded to', w / 2, 442);
+
+        ctx.fillStyle = '#1E4E79';
+        ctx.font = 'bold 62px Georgia, serif';
+        ctx.fillText(currentUser.fullName, w / 2, 522);
+
+        ctx.strokeStyle = '#0D9488'; ctx.lineWidth = 4;
+        ctx.beginPath(); ctx.moveTo(400, 562); ctx.lineTo(w - 400, 562); ctx.stroke();
+
+        ctx.fillStyle = '#64748B';
+        ctx.font = 'bold 24px sans-serif';
+        ctx.fillText(`@${currentUser.username}`, w / 2, 602);
+
         const passed = currentUser.passedSections;
         const avg = Object.keys(passed).reduce((s, k) => s + passed[k].scorePct, 0) / 8;
-        ctx.fillText('has demonstrated comprehensive mastery across all 8 Core Domains and all 200 Questions', 800, 545);
-        ctx.fillText('of Facilities Management Practice Quizzes: Operations & Maintenance,', 800, 590);
-        ctx.font = 'bold 30px sans-serif';
         ctx.fillStyle = '#0F2942';
-        ctx.fillText(`achieving > 80% in every section with a cumulative average of ${avg.toFixed(1)}%.`, 800, 645);
+        ctx.font = 'bold 30px sans-serif';
+        ctx.fillText('200 Practice Questions • All 8 Sections Completed', w / 2, 682);
+
+        ctx.fillStyle = '#0F766E';
+        ctx.font = '26px sans-serif';
+        ctx.fillText(`Average Score: ${avg.toFixed(1)}%  •  Passed (> 80%)`, w / 2, 736);
+
+        ctx.strokeStyle = '#CBD5E1'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(130, 825); ctx.lineTo(w - 130, 825); ctx.stroke();
+
+        const dateVal = currentUser.passedSections[8]?.date || new Date().toLocaleDateString();
+        const idVal = `ADN-FM-MASTER200-${currentUser.username.toUpperCase()}`;
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#0F2942'; ctx.font = '26px sans-serif';
+        ctx.fillText(`Date: ${dateVal}`, 140, 910);
+        ctx.fillStyle = '#475569'; ctx.font = '22px sans-serif';
+        ctx.fillText(`ID: ${idVal}`, 140, 955);
+
+        const sx = w / 2, sy = 932, sr = 78;
+        ctx.beginPath();
+        for (let i = 0; i < 48; i++) {
+          const ang = (2 * Math.PI * i) / 48;
+          const rad = sr + (i % 2 === 0 ? 8 : 0);
+          const px = sx + rad * Math.cos(ang);
+          const py = sy + rad * Math.sin(ang);
+          if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+        ctx.fillStyle = '#1E4E79'; ctx.fill();
+
+        ctx.beginPath(); ctx.arc(sx, sy, sr - 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#0D9488'; ctx.fill();
+        ctx.strokeStyle = '#CCFBF1'; ctx.lineWidth = 4; ctx.stroke();
+
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 20px sans-serif';
+        ctx.fillText('200 Qs', sx, sy - 20);
+        ctx.fillStyle = '#CCFBF1'; ctx.font = 'bold 25px sans-serif';
+        ctx.fillText('MASTER', sx, sy + 6);
+        ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 20px sans-serif';
+        ctx.fillText('CERTIFIED', sx, sy + 32);
+
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#0F2942'; ctx.font = 'bold 30px Georgia, serif';
+        ctx.fillText('Anas Nader', w - 140, 910);
+        ctx.strokeStyle = '#0D9488'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(w - 420, 932); ctx.lineTo(w - 140, 932); ctx.stroke();
+        ctx.fillStyle = '#475569'; ctx.font = '22px sans-serif';
+        ctx.fillText('Author & COO, ADN Soft • UAE', w - 140, 960);
+
       } else {
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.strokeStyle = '#0F2942'; ctx.lineWidth = 16; ctx.strokeRect(38, 38, w - 76, h - 76);
+        ctx.strokeStyle = '#0D9488'; ctx.lineWidth = 4;  ctx.strokeRect(66, 66, w - 132, h - 132);
+
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#0F766E'; ctx.font = 'bold 22px sans-serif';
+        ctx.fillText('ADN SOFT • FM PRACTICE QUIZZES', w / 2, 145);
+
+        ctx.fillStyle = '#0F2942'; ctx.font = 'bold 64px Georgia, serif';
+        ctx.fillText('Section Completion Certificate', w / 2, 230);
+
+        ctx.fillStyle = '#475569'; ctx.font = '26px sans-serif';
+        ctx.fillText('Awarded to', w / 2, 315);
+
+        ctx.fillStyle = '#1E4E79'; ctx.font = 'bold 62px Georgia, serif';
+        ctx.fillText(currentUser.fullName, w / 2, 405);
+
+        ctx.strokeStyle = '#0D9488'; ctx.lineWidth = 4;
+        ctx.beginPath(); ctx.moveTo(420, 445); ctx.lineTo(w - 420, 445); ctx.stroke();
+
+        ctx.fillStyle = '#64748B'; ctx.font = 'bold 24px sans-serif';
+        ctx.fillText(`@${currentUser.username}`, w / 2, 482);
+
         const sec = QUIZ_SECTIONS.find(s => s.id === sectionId);
         const info = currentUser.passedSections[sectionId];
-        ctx.fillText(`has successfully completed and passed Section ${sec.id}: ${sec.title}`, 800, 545);
-        ctx.fillText('from Facilities Management Practice Quizzes: Operations & Maintenance', 800, 590);
-        ctx.font = 'bold 30px sans-serif';
-        ctx.fillStyle = '#0F2942';
-        ctx.fillText(`with a verified score of ${info.scorePct.toFixed(1)}% (${info.correct}/${info.total} correct).`, 800, 645);
+        ctx.fillStyle = '#0F2942'; ctx.font = 'bold 30px sans-serif';
+        ctx.fillText(`Section ${sec.id}: ${sec.title}`, w / 2, 565);
+
+        ctx.fillStyle = '#0F766E'; ctx.font = '26px sans-serif';
+        ctx.fillText(`Score: ${info.scorePct.toFixed(1)}%  •  Passed (> 80%)`, w / 2, 620);
+
+        ctx.beginPath(); ctx.arc(w / 2, 755, 72, 0, Math.PI * 2);
+        ctx.fillStyle = '#0D9488'; ctx.fill();
+        ctx.strokeStyle = '#CCFBF1'; ctx.lineWidth = 5; ctx.stroke();
+
+        ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 20px sans-serif';
+        ctx.fillText('PASSED', w / 2, 741);
+        ctx.font = 'bold 25px sans-serif';
+        ctx.fillText('> 80%', w / 2, 771);
+
+        ctx.strokeStyle = '#E2E8F0'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(130, 885); ctx.lineTo(w - 130, 885); ctx.stroke();
+
+        ctx.textAlign = 'left'; ctx.fillStyle = '#334155'; ctx.font = '22px sans-serif';
+        ctx.fillText(`Date: ${info.date}`, 130, 930);
+        ctx.fillStyle = '#64748B';
+        ctx.fillText(`ID: ${info.certId}`, 130, 968);
+
+        ctx.textAlign = 'right'; ctx.font = 'bold 30px Georgia, serif'; ctx.fillStyle = '#0F2942';
+        ctx.fillText('Anas Nader', w - 130, 930);
+        ctx.font = '22px sans-serif'; ctx.fillStyle = '#475569';
+        ctx.fillText('ADN Soft • UAE', w - 130, 968);
       }
-
-      // Gold Seal
-      ctx.beginPath();
-      ctx.arc(800, 775, 76, 0, Math.PI * 2);
-      ctx.fillStyle = '#D97706';
-      ctx.fill();
-      ctx.strokeStyle = '#FEF3C7';
-      ctx.lineWidth = 5;
-      ctx.stroke();
-
-      ctx.fillStyle = '#FFFFFF';
-      ctx.font = 'bold 22px sans-serif';
-      ctx.fillText(isMaster ? '200 Qs' : 'PASSED', 800, 768);
-      ctx.fillText(isMaster ? 'MASTER' : '> 80%', 800, 798);
-
-      // Footer
-      ctx.textAlign = 'left';
-      ctx.fillStyle = '#334155';
-      ctx.font = '22px sans-serif';
-      const dateVal = isMaster
-        ? (currentUser.passedSections[8]?.date || new Date().toLocaleDateString())
-        : currentUser.passedSections[sectionId].date;
-      const idVal = isMaster
-        ? `ADN-FM-MASTER200-${currentUser.username.toUpperCase()}`
-        : currentUser.passedSections[sectionId].certId;
-      ctx.fillText(`Date Issued: ${dateVal}`, 130, 955);
-      ctx.fillText(`Credential ID: ${idVal}`, 130, 990);
-
-      ctx.textAlign = 'right';
-      ctx.font = 'bold 26px Georgia, serif';
-      ctx.fillStyle = '#0F2942';
-      ctx.fillText('Anas Nader', 1470, 955);
-      ctx.font = '22px sans-serif';
-      ctx.fillStyle = '#475569';
-      ctx.fillText('Author & COO, ADN Soft (UAE)', 1470, 990);
 
       const link = document.createElement('a');
       link.download = isMaster
